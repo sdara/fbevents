@@ -17,7 +17,7 @@
 * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-fbq.version = "2.9.11";
+fbq.version = "2.9.14";
 fbq._releaseSegment = "stable";
 fbq.pendingConfigs = ["global_config"];
 (function(a, b, c, d) {
@@ -649,17 +649,17 @@ fbq.pendingConfigs = ["global_config"];
                         }
                     }
                     function w(b) {
-                        return function(d) {
-                            var c = y(d, F.object());
-                            d = Object.keys(b).reduce(function(d, e) {
-                                if (d == null)
+                        return function(e) {
+                            var d = y(e, F.object());
+                            e = c(Object.keys(b), function(c, e) {
+                                if (c == null)
                                     return null;
                                 var f = b[e]
-                                  , g = c[e];
+                                  , g = d[e];
                                 f = f(g);
-                                return a({}, d, i({}, e, f))
+                                return a({}, c, i({}, e, f))
                             }, {});
-                            return d
+                            return e
                         }
                     }
                     function x(a, b) {
@@ -795,8 +795,6 @@ fbq.pendingConfigs = ["global_config"];
                       , p = ["toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "constructor"]
                       , q = p.length;
                     function r(a) {
-                        if (Object.keys)
-                            return Object.keys(a);
                         if ((typeof a === "undefined" ? "undefined" : g(a)) !== "object" && (typeof a !== "function" || a === null))
                             throw new TypeError("Object.keys called on non-object");
                         var b = [];
@@ -808,8 +806,6 @@ fbq.pendingConfigs = ["global_config"];
                         return b
                     }
                     function s(a, b) {
-                        if (Array.prototype.map)
-                            return Array.prototype.map.call(a, b);
                         if (a == null)
                             throw new TypeError(" array is null or not defined");
                         a = Object(a);
@@ -821,15 +817,13 @@ fbq.pendingConfigs = ["global_config"];
                         while (e < c) {
                             var f;
                             e in a && (f = a[e],
-                            f = b(null, f, e, a),
+                            f = b(f, e, a),
                             d[e] = f);
                             e++
                         }
                         return d
                     }
                     function t(a, b, c) {
-                        if (Array.prototype.reduce)
-                            return Array.prototype.reduce.call(a, b, c);
                         if (a == null)
                             throw new TypeError(" array is null or not defined");
                         if (typeof b !== "function")
@@ -852,10 +846,6 @@ fbq.pendingConfigs = ["global_config"];
                         return c
                     }
                     function u(a) {
-                        if (this == null)
-                            throw new TypeError("Array.prototype.some called on null or undefined");
-                        if (Array.prototype.some)
-                            return Array.prototype.some.call(this, a);
                         if (typeof a !== "function")
                             throw new TypeError();
                         var b = Object(this)
@@ -926,6 +916,9 @@ fbq.pendingConfigs = ["global_config"];
                     function C(a, b) {
                         return a == null || b == null ? !1 : a.indexOf(b) >= 0
                     }
+                    function D(a, b) {
+                        return a == null || b == null ? !1 : a.indexOf(b) === 0
+                    }
                     A = {
                         FBSet: A,
                         castTo: B,
@@ -949,7 +942,8 @@ fbq.pendingConfigs = ["global_config"];
                         some: function(a, b) {
                             return u.call(a, b)
                         },
-                        stringIncludes: C
+                        stringIncludes: C,
+                        stringStartsWith: D
                     };
                     l.exports = A
                 }
@@ -2413,17 +2407,17 @@ fbq.pendingConfigs = ["global_config"];
                         }
                     }
                     function w(b) {
-                        return function(d) {
-                            var c = y(d, F.object());
-                            d = Object.keys(b).reduce(function(d, e) {
-                                if (d == null)
+                        return function(e) {
+                            var d = y(e, F.object());
+                            e = c(Object.keys(b), function(c, e) {
+                                if (c == null)
                                     return null;
                                 var f = b[e]
-                                  , g = c[e];
+                                  , g = d[e];
                                 f = f(g);
-                                return a({}, d, i({}, e, f))
+                                return a({}, c, i({}, e, f))
                             }, {});
-                            return d
+                            return e
                         }
                     }
                     function x(a, b) {
@@ -2559,8 +2553,6 @@ fbq.pendingConfigs = ["global_config"];
                       , p = ["toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "constructor"]
                       , q = p.length;
                     function r(a) {
-                        if (Object.keys)
-                            return Object.keys(a);
                         if ((typeof a === "undefined" ? "undefined" : g(a)) !== "object" && (typeof a !== "function" || a === null))
                             throw new TypeError("Object.keys called on non-object");
                         var b = [];
@@ -2572,8 +2564,6 @@ fbq.pendingConfigs = ["global_config"];
                         return b
                     }
                     function s(a, b) {
-                        if (Array.prototype.map)
-                            return Array.prototype.map.call(a, b);
                         if (a == null)
                             throw new TypeError(" array is null or not defined");
                         a = Object(a);
@@ -2585,15 +2575,13 @@ fbq.pendingConfigs = ["global_config"];
                         while (e < c) {
                             var f;
                             e in a && (f = a[e],
-                            f = b(null, f, e, a),
+                            f = b(f, e, a),
                             d[e] = f);
                             e++
                         }
                         return d
                     }
                     function t(a, b, c) {
-                        if (Array.prototype.reduce)
-                            return Array.prototype.reduce.call(a, b, c);
                         if (a == null)
                             throw new TypeError(" array is null or not defined");
                         if (typeof b !== "function")
@@ -2616,10 +2604,6 @@ fbq.pendingConfigs = ["global_config"];
                         return c
                     }
                     function u(a) {
-                        if (this == null)
-                            throw new TypeError("Array.prototype.some called on null or undefined");
-                        if (Array.prototype.some)
-                            return Array.prototype.some.call(this, a);
                         if (typeof a !== "function")
                             throw new TypeError();
                         var b = Object(this)
@@ -2690,6 +2674,9 @@ fbq.pendingConfigs = ["global_config"];
                     function C(a, b) {
                         return a == null || b == null ? !1 : a.indexOf(b) >= 0
                     }
+                    function D(a, b) {
+                        return a == null || b == null ? !1 : a.indexOf(b) === 0
+                    }
                     A = {
                         FBSet: A,
                         castTo: B,
@@ -2713,7 +2700,8 @@ fbq.pendingConfigs = ["global_config"];
                         some: function(a, b) {
                             return u.call(a, b)
                         },
-                        stringIncludes: C
+                        stringIncludes: C,
+                        stringStartsWith: D
                     };
                     l.exports = A
                 }
@@ -5435,12 +5423,14 @@ fbq.pendingConfigs = ["global_config"];
                       , b = f.getFbeventsModules("SignalsFBEventsLegacyExperimentGroupsTypedef")
                       , c = f.getFbeventsModules("SignalsFBEventsTypeVersioning")
                       , d = f.getFbeventsModules("SignalsFBEventsTyped")
-                      , e = d.coerce
-                      , h = function() {
+                      , e = d.coerce;
+                    d = f.getFbeventsModules("SignalsFBEventsUtils");
+                    var h = d.reduce
+                      , j = function() {
                         return Math.random()
                     };
-                    function j(a) {
-                        var b = a.reduce(function(b, c, a) {
+                    function k(a) {
+                        var b = h(a, function(b, c, a) {
                             if (a === 0) {
                                 b.push([0, c.allocation]);
                                 return b
@@ -5451,20 +5441,20 @@ fbq.pendingConfigs = ["global_config"];
                             b.push([a, a + c.allocation]);
                             return b
                         }, [])
-                          , c = h();
+                          , c = j();
                         for (var d = 0; d < a.length; d++) {
                             var e = a[d]
                               , f = e.passRate
                               , i = e.code;
                             e = e.name;
-                            var j = g(b[d], 2)
-                              , k = j[0];
-                            j = j[1];
-                            if (c >= k && c < j) {
-                                k = h() < f;
+                            var k = g(b[d], 2)
+                              , l = k[0];
+                            k = k[1];
+                            if (c >= l && c < k) {
+                                l = j() < f;
                                 return {
-                                    code: i + (k ? "1" : "0"),
-                                    isInExperimentGroup: k,
+                                    code: i + (l ? "1" : "0"),
+                                    isInExperimentGroup: l,
                                     name: e
                                 }
                             }
@@ -5492,7 +5482,7 @@ fbq.pendingConfigs = ["global_config"];
                                     var b = this._experiments;
                                     if (b == null)
                                         return null;
-                                    b = j(b);
+                                    b = k(b);
                                     b != null && (this._result = b);
                                     this._hasRolled = !0
                                 }
@@ -6040,17 +6030,17 @@ fbq.pendingConfigs = ["global_config"];
                         }
                     }
                     function w(b) {
-                        return function(d) {
-                            var c = y(d, F.object());
-                            d = Object.keys(b).reduce(function(d, e) {
-                                if (d == null)
+                        return function(e) {
+                            var d = y(e, F.object());
+                            e = c(Object.keys(b), function(c, e) {
+                                if (c == null)
                                     return null;
                                 var f = b[e]
-                                  , g = c[e];
+                                  , g = d[e];
                                 f = f(g);
-                                return a({}, d, m({}, e, f))
+                                return a({}, c, m({}, e, f))
                             }, {});
-                            return d
+                            return e
                         }
                     }
                     function x(a, b) {
@@ -6156,29 +6146,14 @@ fbq.pendingConfigs = ["global_config"];
                       , c = a.FBEventsCoercionError;
                     function d(a) {
                         return function(d) {
-                            var e = !0
-                              , f = !1
-                              , g = void 0;
-                            try {
-                                for (var h = a[typeof Symbol === "function" ? Symbol.iterator : "@@iterator"](), i; !(e = (i = h.next()).done); e = !0) {
-                                    i = i.value;
-                                    try {
-                                        return b(d, i)
-                                    } catch (a) {
-                                        if (a.name === "FBEventsCoercionError")
-                                            continue;
-                                        throw a
-                                    }
-                                }
-                            } catch (a) {
-                                f = !0,
-                                g = a
-                            } finally {
+                            for (var e = 0; e < a.length; e++) {
+                                var f = a[e];
                                 try {
-                                    !e && h["return"] && h["return"]()
-                                } finally {
-                                    if (f)
-                                        throw g
+                                    return b(d, f)
+                                } catch (a) {
+                                    if (a.name === "FBEventsCoercionError")
+                                        continue;
+                                    throw a
                                 }
                             }
                             throw new c()
@@ -6242,8 +6217,6 @@ fbq.pendingConfigs = ["global_config"];
                       , p = ["toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "constructor"]
                       , q = p.length;
                     function r(a) {
-                        if (Object.keys)
-                            return Object.keys(a);
                         if ((typeof a === "undefined" ? "undefined" : h(a)) !== "object" && (typeof a !== "function" || a === null))
                             throw new TypeError("Object.keys called on non-object");
                         var b = [];
@@ -6255,8 +6228,6 @@ fbq.pendingConfigs = ["global_config"];
                         return b
                     }
                     function s(a, b) {
-                        if (Array.prototype.map)
-                            return Array.prototype.map.call(a, b);
                         if (a == null)
                             throw new TypeError(" array is null or not defined");
                         a = Object(a);
@@ -6268,15 +6239,13 @@ fbq.pendingConfigs = ["global_config"];
                         while (e < c) {
                             var f;
                             e in a && (f = a[e],
-                            f = b(null, f, e, a),
+                            f = b(f, e, a),
                             d[e] = f);
                             e++
                         }
                         return d
                     }
                     function t(a, b, c) {
-                        if (Array.prototype.reduce)
-                            return Array.prototype.reduce.call(a, b, c);
                         if (a == null)
                             throw new TypeError(" array is null or not defined");
                         if (typeof b !== "function")
@@ -6299,10 +6268,6 @@ fbq.pendingConfigs = ["global_config"];
                         return c
                     }
                     function u(a) {
-                        if (this == null)
-                            throw new TypeError("Array.prototype.some called on null or undefined");
-                        if (Array.prototype.some)
-                            return Array.prototype.some.call(this, a);
                         if (typeof a !== "function")
                             throw new TypeError();
                         var b = Object(this)
@@ -6373,6 +6338,9 @@ fbq.pendingConfigs = ["global_config"];
                     function C(a, b) {
                         return a == null || b == null ? !1 : a.indexOf(b) >= 0
                     }
+                    function D(a, b) {
+                        return a == null || b == null ? !1 : a.indexOf(b) === 0
+                    }
                     A = {
                         FBSet: A,
                         castTo: B,
@@ -6396,7 +6364,8 @@ fbq.pendingConfigs = ["global_config"];
                         some: function(a, b) {
                             return u.call(a, b)
                         },
-                        stringIncludes: C
+                        stringIncludes: C,
+                        stringStartsWith: D
                     };
                     l.exports = A
                 }
@@ -7002,20 +6971,7 @@ fbq.registerPlugin("global_config", {
     __fbEventsPlugin: 1,
     plugin: function(fbq, instance, config) {
         fbq.loadPlugin("opttracking");
-        fbq.set("experiments", {
-            "0": {
-                "name": "logDataLayer",
-                "range": [0, 0],
-                "code": "d",
-                "passRate": 0
-            },
-            "1": {
-                "name": "batching",
-                "range": [0, 0.01],
-                "code": "b",
-                "passRate": 0.5
-            }
-        });
+        fbq.set("experiments", []);
         config.set(null, "batching", {
             "batchWaitTimeMs": 501,
             "maxBatchSize": 10
