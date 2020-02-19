@@ -7221,7 +7221,12 @@ fbq.registerPlugin("global_config", {
     __fbEventsPlugin: 1,
     plugin: function(fbq, instance, config) {
         fbq.loadPlugin("opttracking");
-        fbq.set("experiments", []);
+        fbq.set("experiments", [{
+            "allocation": 0.005,
+            "code": "s",
+            "name": "send_beacon_string",
+            "passRate": 0.5
+        }]);
         config.set(null, "batching", {
             "batchWaitTimeMs": 501,
             "maxBatchSize": 10
