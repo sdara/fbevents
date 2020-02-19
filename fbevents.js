@@ -17,7 +17,7 @@
 * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-fbq.version = "2.9.14";
+fbq.version = "2.9.15";
 fbq._releaseSegment = "stable";
 fbq.pendingConfigs = ["global_config"];
 (function(a, b, c, d) {
@@ -334,82 +334,90 @@ fbq.pendingConfigs = ["global_config"];
                 (function() {
                     "use strict";
                     var a = f.getFbeventsModules("SignalsFBEventsUtils")
-                      , b = a.isInstanceOf
-                      , c = f.getFbeventsModules("SignalsParamList")
-                      , d = f.getFbeventsModules("signalsFBEventsSendGET")
-                      , e = f.getFbeventsModules("SignalsFBEventsJSLoader")
-                      , h = !1;
-                    function i() {
-                        h = !0
-                    }
-                    var j = !0;
+                      , b = a.isArray
+                      , c = a.isInstanceOf
+                      , d = a.map
+                      , e = f.getFbeventsModules("SignalsParamList")
+                      , h = f.getFbeventsModules("signalsFBEventsSendGET")
+                      , i = f.getFbeventsModules("SignalsFBEventsJSLoader")
+                      , j = !1;
                     function l() {
-                        j = !1
+                        j = !0
                     }
-                    var m = "console"
-                      , n = "warn";
-                    function o(a) {
-                        g[m] && g[m][n] && g[m][n](a)
+                    var m = !0;
+                    function n() {
+                        m = !1
                     }
-                    var p = !1;
-                    function q() {
-                        p = !0
+                    var o = "console"
+                      , p = "warn";
+                    function q(a) {
+                        g[o] && g[o][p] && g[o][p](a)
                     }
-                    function r(a) {
-                        if (p)
+                    var r = !1;
+                    function s() {
+                        r = !0
+                    }
+                    function t(a) {
+                        if (r)
                             return;
-                        o("[Facebook Pixel] - " + a)
+                        q("[Facebook Pixel] - " + a)
                     }
-                    var s = "Facebook Pixel Error"
-                      , t = function() {
+                    var u = "Facebook Pixel Error"
+                      , v = function() {
                         g.postMessage != null && g.postMessage.apply(g, arguments)
                     }
-                      , u = {};
-                    function v(a) {
+                      , w = {};
+                    function x(a) {
                         switch (a.type) {
                         case "FBQ_NO_METHOD_NAME":
                             return "You must provide an argument to fbq().";
                         case "INVALID_FBQ_METHOD":
                             var b = a.method;
                             return "\"fbq('" + b + "', ...);\" is not a valid fbq command.";
+                        case "INVALID_FBQ_METHOD_PARAMETER":
+                            b = a.invalidParamName;
+                            var c = a.invalidParamValue
+                              , d = a.method
+                              , e = a.params;
+                            return "Call to \"fbq('" + d + "', " + z(e) + ');" with parameter "' + b + '" has an invalid value of "' + y(c) + '"';
                         case "INVALID_PIXEL_ID":
-                            b = a.pixelID;
-                            return "Invalid PixelID: " + b + ".";
+                            d = a.pixelID;
+                            return "Invalid PixelID: " + d + ".";
                         case "DUPLICATE_PIXEL_ID":
-                            b = a.pixelID;
-                            return "Duplicate Pixel ID: " + b + ".";
+                            e = a.pixelID;
+                            return "Duplicate Pixel ID: " + e + ".";
                         case "SET_METADATA_ON_UNINITIALIZED_PIXEL_ID":
                             b = a.metadataValue;
-                            var c = a.pixelID;
+                            c = a.pixelID;
                             return "Trying to set argument " + b + " for uninitialized Pixel ID " + c + ".";
                         case "CONFLICTING_VERSIONS":
                             return "Multiple pixels with conflicting versions were detected on this page.";
                         case "MULTIPLE_PIXELS":
                             return "Multiple pixels were detected on this page.";
                         case "UNSUPPORTED_METADATA_ARGUMENT":
-                            b = a.metadata;
-                            return "Unsupported metadata argument: " + b + ".";
+                            d = a.metadata;
+                            return "Unsupported metadata argument: " + d + ".";
                         case "REQUIRED_PARAM_MISSING":
-                            c = a.param;
+                            e = a.param;
                             b = a.eventName;
-                            return "Required parameter '" + c + "' is missing for event '" + b + "'.";
+                            return "Required parameter '" + e + "' is missing for event '" + b + "'.";
                         case "INVALID_PARAM":
                             c = a.param;
-                            b = a.eventName;
-                            return "Parameter '" + c + "' is invalid for event '" + b + "'.";
+                            d = a.eventName;
+                            return "Parameter '" + c + "' is invalid for event '" + d + "'.";
                         case "NO_EVENT_NAME":
                             return 'Missing event name. Track events must be logged with an event name fbq("track", eventName)';
                         case "NONSTANDARD_EVENT":
-                            c = a.eventName;
-                            return "You are sending a non-standard event '" + c + "'. The preferred way to send these events is using trackCustom. See 'https://developers.facebook.com/docs/ads-for-websites/pixel-events/#events' for more information.";
+                            e = a.eventName;
+                            return "You are sending a non-standard event '" + e + "'. The preferred way to send these events is using trackCustom. See 'https://developers.facebook.com/docs/ads-for-websites/pixel-events/#events' for more information.";
                         case "NEGATIVE_EVENT_PARAM":
                             b = a.param;
                             c = a.eventName;
                             return "Parameter '" + b + "' is negative for event '" + c + "'.";
                         case "PII_INVALID_TYPE":
-                            b = a.key_type;
-                            c = a.key_val;
-                            return "An invalid " + b + " was specified for '" + c + "'. This data will not be sent with any events for this Pixel.";
+                            d = a.key_type;
+                            e = a.key_val;
+                            return "An invalid " + d + " was specified for '" + e + "'. This data will not be sent with any events for this Pixel.";
                         case "PII_UNHASHED_PII":
                             b = a.key;
                             return "The value for the '" + b + "' key appeared to be PII. This data will not be sent with any events for this Pixel.";
@@ -417,65 +425,83 @@ fbq.pendingConfigs = ["global_config"];
                             c = a.action;
                             return "\"fbq('" + c + "', ...);\" is not a valid fbq('consent', ...) action. Valid actions are 'revoke' and 'grant'.";
                         case "INVALID_JSON_LD":
-                            b = a.jsonLd;
-                            return "Unable to parse JSON-LD tag. Malformed JSON found: '" + b + "'.";
+                            d = a.jsonLd;
+                            return "Unable to parse JSON-LD tag. Malformed JSON found: '" + d + "'.";
                         case "SITE_CODELESS_OPT_OUT":
-                            c = a.pixelID;
-                            return "Unable to open Codeless events interface for pixel as the site has opted out. Pixel ID: " + c + ".";
+                            e = a.pixelID;
+                            return "Unable to open Codeless events interface for pixel as the site has opted out. Pixel ID: " + e + ".";
                         case "PIXEL_NOT_INITIALIZED":
                             b = a.pixelID;
                             return "Pixel " + b + " not found";
                         default:
-                            y(new Error("INVALID_USER_ERROR - " + a.type + " - " + JSON.stringify(a)));
+                            C(new Error("INVALID_USER_ERROR - " + a.type + " - " + JSON.stringify(a)));
                             return "Invalid User Error."
                         }
                     }
-                    function w(a, f) {
+                    var y = function(a) {
+                        if (typeof a === "string")
+                            return "'" + a + "'";
+                        else if (typeof a == "undefined")
+                            return "undefined";
+                        else if (a === null)
+                            return "null";
+                        else if (!b(a) && a.constructor != null && a.constructor.name != null)
+                            return a.constructor.name;
                         try {
-                            var h = Math.random()
-                              , i = g.fbq && g.fbq._releaseSegment ? g.fbq._releaseSegment : "unknown";
-                            if (j && h < .01 || i === "canary") {
-                                h = new c(null);
-                                h.append("p", "pixel");
-                                h.append("v", g.fbq && g.fbq.version ? g.fbq.version : "unknown");
-                                h.append("e", a.toString());
-                                b(a, Error) && (h.append("f", a.fileName),
-                                h.append("s", a.stackTrace || a.stack));
-                                h.append("ue", f ? "1" : "0");
-                                h.append("rs", i);
-                                d(h, {
-                                    url: e.CONFIG.CDN_BASE_URL + "/log/error",
+                            return JSON.stringify(a) || "undefined"
+                        } catch (a) {
+                            return "undefined"
+                        }
+                    }
+                      , z = function(a) {
+                        return d(a, y).join(", ")
+                    };
+                    function A(a, b) {
+                        try {
+                            var d = Math.random()
+                              , f = g.fbq && g.fbq._releaseSegment ? g.fbq._releaseSegment : "unknown";
+                            if (m && d < .01 || f === "canary") {
+                                d = new e(null);
+                                d.append("p", "pixel");
+                                d.append("v", g.fbq && g.fbq.version ? g.fbq.version : "unknown");
+                                d.append("e", a.toString());
+                                c(a, Error) && (d.append("f", a.fileName),
+                                d.append("s", a.stackTrace || a.stack));
+                                d.append("ue", b ? "1" : "0");
+                                d.append("rs", f);
+                                h(d, {
+                                    url: i.CONFIG.CDN_BASE_URL + "/log/error",
                                     ignoreRequestLengthCheck: !0
                                 })
                             }
                         } catch (a) {}
                     }
-                    function x(a) {
+                    function B(a) {
                         var b = JSON.stringify(a);
-                        if (!Object.prototype.hasOwnProperty.call(u, b))
-                            u[b] = !0;
+                        if (!Object.prototype.hasOwnProperty.call(w, b))
+                            w[b] = !0;
                         else
                             return;
-                        b = v(a);
-                        r(b);
-                        t({
+                        b = x(a);
+                        t(b);
+                        v({
                             action: "FB_LOG",
                             logMessage: b,
-                            logType: s
+                            logType: u
                         }, "*");
-                        w(new Error(b), !0)
+                        A(new Error(b), !0)
                     }
-                    function y(a) {
-                        w(a, !1),
-                        h && r(a.toString())
+                    function C(a) {
+                        A(a, !1),
+                        j && t(a.toString())
                     }
                     a = {
-                        consoleWarn: o,
-                        disableAllLogging: q,
-                        disableSampling: l,
-                        enableVerboseDebugLogging: i,
-                        logError: y,
-                        logUserError: x
+                        consoleWarn: q,
+                        disableAllLogging: s,
+                        disableSampling: n,
+                        enableVerboseDebugLogging: l,
+                        logError: C,
+                        logUserError: B
                     };
                     k.exports = a
                 }
@@ -771,14 +797,31 @@ fbq.pendingConfigs = ["global_config"];
                     function e(a) {
                         return typeof a === "number" || typeof a === "string" && /^\d+$/.test(a)
                     }
-                    var f = Number.isInteger || function(a) {
+                    function f(a) {
+                        return a != null && (typeof a === "undefined" ? "undefined" : g(a)) === "object" && d(a) === !1
+                    }
+                    function j(a) {
+                        return f(a) === !0 && Object.prototype.toString.call(a) === "[object Object]"
+                    }
+                    function k(a) {
+                        if (j(a) === !1)
+                            return !1;
+                        a = a.constructor;
+                        if (typeof a !== "function")
+                            return !1;
+                        a = a.prototype;
+                        if (j(a) === !1)
+                            return !1;
+                        return Object.prototype.hasOwnProperty.call(a, "isPrototypeOf") === !1 ? !1 : !0
+                    }
+                    var n = Number.isInteger || function(a) {
                         return typeof a === "number" && isFinite(a) && Math.floor(a) === a
                     }
                     ;
-                    function j(a) {
-                        return f(a) && a >= 0 && a <= Number.MAX_SAFE_INTEGER
+                    function o(a) {
+                        return n(a) && a >= 0 && a <= Number.MAX_SAFE_INTEGER
                     }
-                    function k(a, c, d) {
+                    function p(a, c, d) {
                         var e = b ? "on" + c : c;
                         c = b ? a.attachEvent : a.addEventListener;
                         var f = b ? a.detachEvent : a.removeEventListener
@@ -788,24 +831,24 @@ fbq.pendingConfigs = ["global_config"];
                         };
                         c && c.call(a, e, g, !1)
                     }
-                    var n = Object.prototype.hasOwnProperty
-                      , o = !{
+                    var q = Object.prototype.hasOwnProperty
+                      , r = !{
                         toString: null
                     }.propertyIsEnumerable("toString")
-                      , p = ["toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "constructor"]
-                      , q = p.length;
-                    function r(a) {
+                      , s = ["toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "constructor"]
+                      , t = s.length;
+                    function u(a) {
                         if ((typeof a === "undefined" ? "undefined" : g(a)) !== "object" && (typeof a !== "function" || a === null))
                             throw new TypeError("Object.keys called on non-object");
                         var b = [];
                         for (var c in a)
-                            n.call(a, c) && b.push(c);
-                        if (o)
-                            for (var d = 0; d < q; d++)
-                                n.call(a, p[d]) && b.push(p[d]);
+                            q.call(a, c) && b.push(c);
+                        if (r)
+                            for (var d = 0; d < t; d++)
+                                q.call(a, s[d]) && b.push(s[d]);
                         return b
                     }
-                    function s(a, b) {
+                    function v(a, b) {
                         if (a == null)
                             throw new TypeError(" array is null or not defined");
                         a = Object(a);
@@ -823,7 +866,7 @@ fbq.pendingConfigs = ["global_config"];
                         }
                         return d
                     }
-                    function t(a, b, c) {
+                    function w(a, b, c) {
                         if (a == null)
                             throw new TypeError(" array is null or not defined");
                         if (typeof b !== "function")
@@ -845,7 +888,7 @@ fbq.pendingConfigs = ["global_config"];
                             f++;
                         return c
                     }
-                    function u(a) {
+                    function x(a) {
                         if (typeof a !== "function")
                             throw new TypeError();
                         var b = Object(this)
@@ -856,10 +899,10 @@ fbq.pendingConfigs = ["global_config"];
                                 return !0;
                         return !1
                     }
-                    function v(a) {
-                        return r(a).length === 0
+                    function y(a) {
+                        return u(a).length === 0
                     }
-                    function w(a) {
+                    function z(a) {
                         if (this === void 0 || this === null)
                             throw new TypeError();
                         var b = Object(this)
@@ -875,22 +918,22 @@ fbq.pendingConfigs = ["global_config"];
                             }
                         return d
                     }
-                    function x(a, b) {
+                    function A(a, b) {
                         try {
                             return b(a)
                         } catch (a) {
                             if (a instanceof TypeError)
-                                if (y.test(a))
+                                if (B.test(a))
                                     return null;
-                                else if (z.test(a))
+                                else if (C.test(a))
                                     return void 0;
                             throw a
                         }
                     }
-                    var y = /^null | null$|^[^(]* null /i
-                      , z = /^undefined | undefined$|^[^(]* undefined /i;
-                    x["default"] = x;
-                    var A = function() {
+                    var B = /^null | null$|^[^(]* null /i
+                      , C = /^undefined | undefined$|^[^(]* undefined /i;
+                    A["default"] = A;
+                    var D = function() {
                         function a(b) {
                             m(this, a),
                             this.items = b || []
@@ -898,7 +941,7 @@ fbq.pendingConfigs = ["global_config"];
                         h(a, [{
                             key: "has",
                             value: function(a) {
-                                return u.call(this.items, function(b) {
+                                return x.call(this.items, function(b) {
                                     return b === a
                                 })
                             }
@@ -910,42 +953,44 @@ fbq.pendingConfigs = ["global_config"];
                         }]);
                         return a
                     }();
-                    function B(a) {
+                    function E(a) {
                         return a
                     }
-                    function C(a, b) {
+                    function F(a, b) {
                         return a == null || b == null ? !1 : a.indexOf(b) >= 0
                     }
-                    function D(a, b) {
+                    function G(a, b) {
                         return a == null || b == null ? !1 : a.indexOf(b) === 0
                     }
-                    A = {
-                        FBSet: A,
-                        castTo: B,
+                    D = {
+                        FBSet: D,
+                        castTo: E,
                         each: function(a, b) {
-                            s.call(this, a, b)
+                            v.call(this, a, b)
                         },
                         filter: function(a, b) {
-                            return w.call(a, b)
+                            return z.call(a, b)
                         },
-                        idx: x,
+                        idx: A,
                         isArray: d,
-                        isEmptyObject: v,
+                        isEmptyObject: y,
                         isInstanceOf: c,
-                        isInteger: f,
+                        isInteger: n,
                         isNumber: e,
-                        isSafeInteger: j,
-                        keys: r,
-                        listenOnce: k,
-                        map: s,
-                        reduce: t,
+                        isObject: f,
+                        isPlainObject: k,
+                        isSafeInteger: o,
+                        keys: u,
+                        listenOnce: p,
+                        map: v,
+                        reduce: w,
                         some: function(a, b) {
-                            return u.call(a, b)
+                            return x.call(a, b)
                         },
-                        stringIncludes: C,
-                        stringStartsWith: D
+                        stringIncludes: F,
+                        stringStartsWith: G
                     };
-                    l.exports = A
+                    l.exports = D
                 }
                 )();
                 return l.exports
@@ -1502,6 +1547,24 @@ fbq.pendingConfigs = ["global_config"];
                         return null
                     }
                     function k(a) {
+                        if (a == null || (typeof a === "undefined" ? "undefined" : g(a)) !== "object")
+                            return null;
+                        a = a.extractor_config;
+                        if (a == null || (typeof a === "undefined" ? "undefined" : g(a)) !== "object")
+                            return null;
+                        var b = a.context
+                          , c = a.parameter_type;
+                        a = a.value;
+                        b = b != null && typeof b === "string" && b !== "" ? b : null;
+                        c = d(c);
+                        a = a != null && typeof a === "string" && a !== "" ? a : null;
+                        return b != null && c != null && a != null ? {
+                            context: b,
+                            parameter_type: c,
+                            value: a
+                        } : null
+                    }
+                    function m(a) {
                         var b = e(a);
                         if (b == null || a == null || (typeof a === "undefined" ? "undefined" : g(a)) !== "object")
                             return null;
@@ -1580,14 +1643,20 @@ fbq.pendingConfigs = ["global_config"];
                                 extractor_type: "SCHEMA_DOT_ORG",
                                 id: b
                             };
-                        return f === "URI" ? {
-                            domain_uri: c,
-                            event_type: d,
-                            extractor_type: "URI",
-                            id: b
-                        } : null
+                        if (f === "URI") {
+                            i = k(a);
+                            if (i != null)
+                                return {
+                                    domain_uri: c,
+                                    event_type: d,
+                                    extractor_config: i,
+                                    extractor_type: "URI",
+                                    id: b
+                                }
+                        }
+                        return null
                     }
-                    l.exports = k
+                    l.exports = m
                 }
                 )();
                 return l.exports
@@ -1925,82 +1994,90 @@ fbq.pendingConfigs = ["global_config"];
                 (function() {
                     "use strict";
                     var a = f.getFbeventsModules("SignalsFBEventsUtils")
-                      , b = a.isInstanceOf
-                      , c = f.getFbeventsModules("SignalsParamList")
-                      , d = f.getFbeventsModules("signalsFBEventsSendGET")
-                      , e = f.getFbeventsModules("SignalsFBEventsJSLoader")
-                      , h = !1;
-                    function i() {
-                        h = !0
-                    }
-                    var j = !0;
+                      , b = a.isArray
+                      , c = a.isInstanceOf
+                      , d = a.map
+                      , e = f.getFbeventsModules("SignalsParamList")
+                      , h = f.getFbeventsModules("signalsFBEventsSendGET")
+                      , i = f.getFbeventsModules("SignalsFBEventsJSLoader")
+                      , j = !1;
                     function l() {
-                        j = !1
+                        j = !0
                     }
-                    var m = "console"
-                      , n = "warn";
-                    function o(a) {
-                        g[m] && g[m][n] && g[m][n](a)
+                    var m = !0;
+                    function n() {
+                        m = !1
                     }
-                    var p = !1;
-                    function q() {
-                        p = !0
+                    var o = "console"
+                      , p = "warn";
+                    function q(a) {
+                        g[o] && g[o][p] && g[o][p](a)
                     }
-                    function r(a) {
-                        if (p)
+                    var r = !1;
+                    function s() {
+                        r = !0
+                    }
+                    function t(a) {
+                        if (r)
                             return;
-                        o("[Facebook Pixel] - " + a)
+                        q("[Facebook Pixel] - " + a)
                     }
-                    var s = "Facebook Pixel Error"
-                      , t = function() {
+                    var u = "Facebook Pixel Error"
+                      , v = function() {
                         g.postMessage != null && g.postMessage.apply(g, arguments)
                     }
-                      , u = {};
-                    function v(a) {
+                      , w = {};
+                    function x(a) {
                         switch (a.type) {
                         case "FBQ_NO_METHOD_NAME":
                             return "You must provide an argument to fbq().";
                         case "INVALID_FBQ_METHOD":
                             var b = a.method;
                             return "\"fbq('" + b + "', ...);\" is not a valid fbq command.";
+                        case "INVALID_FBQ_METHOD_PARAMETER":
+                            b = a.invalidParamName;
+                            var c = a.invalidParamValue
+                              , d = a.method
+                              , e = a.params;
+                            return "Call to \"fbq('" + d + "', " + z(e) + ');" with parameter "' + b + '" has an invalid value of "' + y(c) + '"';
                         case "INVALID_PIXEL_ID":
-                            b = a.pixelID;
-                            return "Invalid PixelID: " + b + ".";
+                            d = a.pixelID;
+                            return "Invalid PixelID: " + d + ".";
                         case "DUPLICATE_PIXEL_ID":
-                            b = a.pixelID;
-                            return "Duplicate Pixel ID: " + b + ".";
+                            e = a.pixelID;
+                            return "Duplicate Pixel ID: " + e + ".";
                         case "SET_METADATA_ON_UNINITIALIZED_PIXEL_ID":
                             b = a.metadataValue;
-                            var c = a.pixelID;
+                            c = a.pixelID;
                             return "Trying to set argument " + b + " for uninitialized Pixel ID " + c + ".";
                         case "CONFLICTING_VERSIONS":
                             return "Multiple pixels with conflicting versions were detected on this page.";
                         case "MULTIPLE_PIXELS":
                             return "Multiple pixels were detected on this page.";
                         case "UNSUPPORTED_METADATA_ARGUMENT":
-                            b = a.metadata;
-                            return "Unsupported metadata argument: " + b + ".";
+                            d = a.metadata;
+                            return "Unsupported metadata argument: " + d + ".";
                         case "REQUIRED_PARAM_MISSING":
-                            c = a.param;
+                            e = a.param;
                             b = a.eventName;
-                            return "Required parameter '" + c + "' is missing for event '" + b + "'.";
+                            return "Required parameter '" + e + "' is missing for event '" + b + "'.";
                         case "INVALID_PARAM":
                             c = a.param;
-                            b = a.eventName;
-                            return "Parameter '" + c + "' is invalid for event '" + b + "'.";
+                            d = a.eventName;
+                            return "Parameter '" + c + "' is invalid for event '" + d + "'.";
                         case "NO_EVENT_NAME":
                             return 'Missing event name. Track events must be logged with an event name fbq("track", eventName)';
                         case "NONSTANDARD_EVENT":
-                            c = a.eventName;
-                            return "You are sending a non-standard event '" + c + "'. The preferred way to send these events is using trackCustom. See 'https://developers.facebook.com/docs/ads-for-websites/pixel-events/#events' for more information.";
+                            e = a.eventName;
+                            return "You are sending a non-standard event '" + e + "'. The preferred way to send these events is using trackCustom. See 'https://developers.facebook.com/docs/ads-for-websites/pixel-events/#events' for more information.";
                         case "NEGATIVE_EVENT_PARAM":
                             b = a.param;
                             c = a.eventName;
                             return "Parameter '" + b + "' is negative for event '" + c + "'.";
                         case "PII_INVALID_TYPE":
-                            b = a.key_type;
-                            c = a.key_val;
-                            return "An invalid " + b + " was specified for '" + c + "'. This data will not be sent with any events for this Pixel.";
+                            d = a.key_type;
+                            e = a.key_val;
+                            return "An invalid " + d + " was specified for '" + e + "'. This data will not be sent with any events for this Pixel.";
                         case "PII_UNHASHED_PII":
                             b = a.key;
                             return "The value for the '" + b + "' key appeared to be PII. This data will not be sent with any events for this Pixel.";
@@ -2008,65 +2085,83 @@ fbq.pendingConfigs = ["global_config"];
                             c = a.action;
                             return "\"fbq('" + c + "', ...);\" is not a valid fbq('consent', ...) action. Valid actions are 'revoke' and 'grant'.";
                         case "INVALID_JSON_LD":
-                            b = a.jsonLd;
-                            return "Unable to parse JSON-LD tag. Malformed JSON found: '" + b + "'.";
+                            d = a.jsonLd;
+                            return "Unable to parse JSON-LD tag. Malformed JSON found: '" + d + "'.";
                         case "SITE_CODELESS_OPT_OUT":
-                            c = a.pixelID;
-                            return "Unable to open Codeless events interface for pixel as the site has opted out. Pixel ID: " + c + ".";
+                            e = a.pixelID;
+                            return "Unable to open Codeless events interface for pixel as the site has opted out. Pixel ID: " + e + ".";
                         case "PIXEL_NOT_INITIALIZED":
                             b = a.pixelID;
                             return "Pixel " + b + " not found";
                         default:
-                            y(new Error("INVALID_USER_ERROR - " + a.type + " - " + JSON.stringify(a)));
+                            C(new Error("INVALID_USER_ERROR - " + a.type + " - " + JSON.stringify(a)));
                             return "Invalid User Error."
                         }
                     }
-                    function w(a, f) {
+                    var y = function(a) {
+                        if (typeof a === "string")
+                            return "'" + a + "'";
+                        else if (typeof a == "undefined")
+                            return "undefined";
+                        else if (a === null)
+                            return "null";
+                        else if (!b(a) && a.constructor != null && a.constructor.name != null)
+                            return a.constructor.name;
                         try {
-                            var h = Math.random()
-                              , i = g.fbq && g.fbq._releaseSegment ? g.fbq._releaseSegment : "unknown";
-                            if (j && h < .01 || i === "canary") {
-                                h = new c(null);
-                                h.append("p", "pixel");
-                                h.append("v", g.fbq && g.fbq.version ? g.fbq.version : "unknown");
-                                h.append("e", a.toString());
-                                b(a, Error) && (h.append("f", a.fileName),
-                                h.append("s", a.stackTrace || a.stack));
-                                h.append("ue", f ? "1" : "0");
-                                h.append("rs", i);
-                                d(h, {
-                                    url: e.CONFIG.CDN_BASE_URL + "/log/error",
+                            return JSON.stringify(a) || "undefined"
+                        } catch (a) {
+                            return "undefined"
+                        }
+                    }
+                      , z = function(a) {
+                        return d(a, y).join(", ")
+                    };
+                    function A(a, b) {
+                        try {
+                            var d = Math.random()
+                              , f = g.fbq && g.fbq._releaseSegment ? g.fbq._releaseSegment : "unknown";
+                            if (m && d < .01 || f === "canary") {
+                                d = new e(null);
+                                d.append("p", "pixel");
+                                d.append("v", g.fbq && g.fbq.version ? g.fbq.version : "unknown");
+                                d.append("e", a.toString());
+                                c(a, Error) && (d.append("f", a.fileName),
+                                d.append("s", a.stackTrace || a.stack));
+                                d.append("ue", b ? "1" : "0");
+                                d.append("rs", f);
+                                h(d, {
+                                    url: i.CONFIG.CDN_BASE_URL + "/log/error",
                                     ignoreRequestLengthCheck: !0
                                 })
                             }
                         } catch (a) {}
                     }
-                    function x(a) {
+                    function B(a) {
                         var b = JSON.stringify(a);
-                        if (!Object.prototype.hasOwnProperty.call(u, b))
-                            u[b] = !0;
+                        if (!Object.prototype.hasOwnProperty.call(w, b))
+                            w[b] = !0;
                         else
                             return;
-                        b = v(a);
-                        r(b);
-                        t({
+                        b = x(a);
+                        t(b);
+                        v({
                             action: "FB_LOG",
                             logMessage: b,
-                            logType: s
+                            logType: u
                         }, "*");
-                        w(new Error(b), !0)
+                        A(new Error(b), !0)
                     }
-                    function y(a) {
-                        w(a, !1),
-                        h && r(a.toString())
+                    function C(a) {
+                        A(a, !1),
+                        j && t(a.toString())
                     }
                     a = {
-                        consoleWarn: o,
-                        disableAllLogging: q,
-                        disableSampling: l,
-                        enableVerboseDebugLogging: i,
-                        logError: y,
-                        logUserError: x
+                        consoleWarn: q,
+                        disableAllLogging: s,
+                        disableSampling: n,
+                        enableVerboseDebugLogging: l,
+                        logError: C,
+                        logUserError: B
                     };
                     k.exports = a
                 }
@@ -2529,14 +2624,31 @@ fbq.pendingConfigs = ["global_config"];
                     function e(a) {
                         return typeof a === "number" || typeof a === "string" && /^\d+$/.test(a)
                     }
-                    var f = Number.isInteger || function(a) {
+                    function f(a) {
+                        return a != null && (typeof a === "undefined" ? "undefined" : g(a)) === "object" && d(a) === !1
+                    }
+                    function j(a) {
+                        return f(a) === !0 && Object.prototype.toString.call(a) === "[object Object]"
+                    }
+                    function k(a) {
+                        if (j(a) === !1)
+                            return !1;
+                        a = a.constructor;
+                        if (typeof a !== "function")
+                            return !1;
+                        a = a.prototype;
+                        if (j(a) === !1)
+                            return !1;
+                        return Object.prototype.hasOwnProperty.call(a, "isPrototypeOf") === !1 ? !1 : !0
+                    }
+                    var n = Number.isInteger || function(a) {
                         return typeof a === "number" && isFinite(a) && Math.floor(a) === a
                     }
                     ;
-                    function j(a) {
-                        return f(a) && a >= 0 && a <= Number.MAX_SAFE_INTEGER
+                    function o(a) {
+                        return n(a) && a >= 0 && a <= Number.MAX_SAFE_INTEGER
                     }
-                    function k(a, c, d) {
+                    function p(a, c, d) {
                         var e = b ? "on" + c : c;
                         c = b ? a.attachEvent : a.addEventListener;
                         var f = b ? a.detachEvent : a.removeEventListener
@@ -2546,24 +2658,24 @@ fbq.pendingConfigs = ["global_config"];
                         };
                         c && c.call(a, e, g, !1)
                     }
-                    var n = Object.prototype.hasOwnProperty
-                      , o = !{
+                    var q = Object.prototype.hasOwnProperty
+                      , r = !{
                         toString: null
                     }.propertyIsEnumerable("toString")
-                      , p = ["toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "constructor"]
-                      , q = p.length;
-                    function r(a) {
+                      , s = ["toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "constructor"]
+                      , t = s.length;
+                    function u(a) {
                         if ((typeof a === "undefined" ? "undefined" : g(a)) !== "object" && (typeof a !== "function" || a === null))
                             throw new TypeError("Object.keys called on non-object");
                         var b = [];
                         for (var c in a)
-                            n.call(a, c) && b.push(c);
-                        if (o)
-                            for (var d = 0; d < q; d++)
-                                n.call(a, p[d]) && b.push(p[d]);
+                            q.call(a, c) && b.push(c);
+                        if (r)
+                            for (var d = 0; d < t; d++)
+                                q.call(a, s[d]) && b.push(s[d]);
                         return b
                     }
-                    function s(a, b) {
+                    function v(a, b) {
                         if (a == null)
                             throw new TypeError(" array is null or not defined");
                         a = Object(a);
@@ -2581,7 +2693,7 @@ fbq.pendingConfigs = ["global_config"];
                         }
                         return d
                     }
-                    function t(a, b, c) {
+                    function w(a, b, c) {
                         if (a == null)
                             throw new TypeError(" array is null or not defined");
                         if (typeof b !== "function")
@@ -2603,7 +2715,7 @@ fbq.pendingConfigs = ["global_config"];
                             f++;
                         return c
                     }
-                    function u(a) {
+                    function x(a) {
                         if (typeof a !== "function")
                             throw new TypeError();
                         var b = Object(this)
@@ -2614,10 +2726,10 @@ fbq.pendingConfigs = ["global_config"];
                                 return !0;
                         return !1
                     }
-                    function v(a) {
-                        return r(a).length === 0
+                    function y(a) {
+                        return u(a).length === 0
                     }
-                    function w(a) {
+                    function z(a) {
                         if (this === void 0 || this === null)
                             throw new TypeError();
                         var b = Object(this)
@@ -2633,22 +2745,22 @@ fbq.pendingConfigs = ["global_config"];
                             }
                         return d
                     }
-                    function x(a, b) {
+                    function A(a, b) {
                         try {
                             return b(a)
                         } catch (a) {
                             if (a instanceof TypeError)
-                                if (y.test(a))
+                                if (B.test(a))
                                     return null;
-                                else if (z.test(a))
+                                else if (C.test(a))
                                     return void 0;
                             throw a
                         }
                     }
-                    var y = /^null | null$|^[^(]* null /i
-                      , z = /^undefined | undefined$|^[^(]* undefined /i;
-                    x["default"] = x;
-                    var A = function() {
+                    var B = /^null | null$|^[^(]* null /i
+                      , C = /^undefined | undefined$|^[^(]* undefined /i;
+                    A["default"] = A;
+                    var D = function() {
                         function a(b) {
                             m(this, a),
                             this.items = b || []
@@ -2656,7 +2768,7 @@ fbq.pendingConfigs = ["global_config"];
                         h(a, [{
                             key: "has",
                             value: function(a) {
-                                return u.call(this.items, function(b) {
+                                return x.call(this.items, function(b) {
                                     return b === a
                                 })
                             }
@@ -2668,42 +2780,44 @@ fbq.pendingConfigs = ["global_config"];
                         }]);
                         return a
                     }();
-                    function B(a) {
+                    function E(a) {
                         return a
                     }
-                    function C(a, b) {
+                    function F(a, b) {
                         return a == null || b == null ? !1 : a.indexOf(b) >= 0
                     }
-                    function D(a, b) {
+                    function G(a, b) {
                         return a == null || b == null ? !1 : a.indexOf(b) === 0
                     }
-                    A = {
-                        FBSet: A,
-                        castTo: B,
+                    D = {
+                        FBSet: D,
+                        castTo: E,
                         each: function(a, b) {
-                            s.call(this, a, b)
+                            v.call(this, a, b)
                         },
                         filter: function(a, b) {
-                            return w.call(a, b)
+                            return z.call(a, b)
                         },
-                        idx: x,
+                        idx: A,
                         isArray: d,
-                        isEmptyObject: v,
+                        isEmptyObject: y,
                         isInstanceOf: c,
-                        isInteger: f,
+                        isInteger: n,
                         isNumber: e,
-                        isSafeInteger: j,
-                        keys: r,
-                        listenOnce: k,
-                        map: s,
-                        reduce: t,
+                        isObject: f,
+                        isPlainObject: k,
+                        isSafeInteger: o,
+                        keys: u,
+                        listenOnce: p,
+                        map: v,
+                        reduce: w,
                         some: function(a, b) {
-                            return u.call(a, b)
+                            return x.call(a, b)
                         },
-                        stringIncludes: C,
-                        stringStartsWith: D
+                        stringIncludes: F,
+                        stringStartsWith: G
                     };
-                    l.exports = A
+                    l.exports = D
                 }
                 )();
                 return l.exports
@@ -3643,6 +3757,24 @@ fbq.pendingConfigs = ["global_config"];
                         return null
                     }
                     function k(a) {
+                        if (a == null || (typeof a === "undefined" ? "undefined" : h(a)) !== "object")
+                            return null;
+                        a = a.extractor_config;
+                        if (a == null || (typeof a === "undefined" ? "undefined" : h(a)) !== "object")
+                            return null;
+                        var b = a.context
+                          , c = a.parameter_type;
+                        a = a.value;
+                        b = b != null && typeof b === "string" && b !== "" ? b : null;
+                        c = d(c);
+                        a = a != null && typeof a === "string" && a !== "" ? a : null;
+                        return b != null && c != null && a != null ? {
+                            context: b,
+                            parameter_type: c,
+                            value: a
+                        } : null
+                    }
+                    function m(a) {
                         var b = e(a);
                         if (b == null || a == null || (typeof a === "undefined" ? "undefined" : h(a)) !== "object")
                             return null;
@@ -3721,14 +3853,20 @@ fbq.pendingConfigs = ["global_config"];
                                 extractor_type: "SCHEMA_DOT_ORG",
                                 id: b
                             };
-                        return f === "URI" ? {
-                            domain_uri: c,
-                            event_type: d,
-                            extractor_type: "URI",
-                            id: b
-                        } : null
+                        if (f === "URI") {
+                            i = k(a);
+                            if (i != null)
+                                return {
+                                    domain_uri: c,
+                                    event_type: d,
+                                    extractor_config: i,
+                                    extractor_type: "URI",
+                                    id: b
+                                }
+                        }
+                        return null
                     }
-                    l.exports = k
+                    l.exports = m
                 }
                 )();
                 return l.exports
@@ -4795,82 +4933,90 @@ fbq.pendingConfigs = ["global_config"];
                 (function() {
                     "use strict";
                     var a = f.getFbeventsModules("SignalsFBEventsUtils")
-                      , b = a.isInstanceOf
-                      , c = f.getFbeventsModules("SignalsParamList")
-                      , d = f.getFbeventsModules("signalsFBEventsSendGET")
-                      , e = f.getFbeventsModules("SignalsFBEventsJSLoader")
-                      , h = !1;
-                    function i() {
-                        h = !0
-                    }
-                    var j = !0;
+                      , b = a.isArray
+                      , c = a.isInstanceOf
+                      , d = a.map
+                      , e = f.getFbeventsModules("SignalsParamList")
+                      , h = f.getFbeventsModules("signalsFBEventsSendGET")
+                      , i = f.getFbeventsModules("SignalsFBEventsJSLoader")
+                      , j = !1;
                     function l() {
-                        j = !1
+                        j = !0
                     }
-                    var m = "console"
-                      , n = "warn";
-                    function o(a) {
-                        g[m] && g[m][n] && g[m][n](a)
+                    var m = !0;
+                    function n() {
+                        m = !1
                     }
-                    var p = !1;
-                    function q() {
-                        p = !0
+                    var o = "console"
+                      , p = "warn";
+                    function q(a) {
+                        g[o] && g[o][p] && g[o][p](a)
                     }
-                    function r(a) {
-                        if (p)
+                    var r = !1;
+                    function s() {
+                        r = !0
+                    }
+                    function t(a) {
+                        if (r)
                             return;
-                        o("[Facebook Pixel] - " + a)
+                        q("[Facebook Pixel] - " + a)
                     }
-                    var s = "Facebook Pixel Error"
-                      , t = function() {
+                    var u = "Facebook Pixel Error"
+                      , v = function() {
                         g.postMessage != null && g.postMessage.apply(g, arguments)
                     }
-                      , u = {};
-                    function v(a) {
+                      , w = {};
+                    function x(a) {
                         switch (a.type) {
                         case "FBQ_NO_METHOD_NAME":
                             return "You must provide an argument to fbq().";
                         case "INVALID_FBQ_METHOD":
                             var b = a.method;
                             return "\"fbq('" + b + "', ...);\" is not a valid fbq command.";
+                        case "INVALID_FBQ_METHOD_PARAMETER":
+                            b = a.invalidParamName;
+                            var c = a.invalidParamValue
+                              , d = a.method
+                              , e = a.params;
+                            return "Call to \"fbq('" + d + "', " + z(e) + ');" with parameter "' + b + '" has an invalid value of "' + y(c) + '"';
                         case "INVALID_PIXEL_ID":
-                            b = a.pixelID;
-                            return "Invalid PixelID: " + b + ".";
+                            d = a.pixelID;
+                            return "Invalid PixelID: " + d + ".";
                         case "DUPLICATE_PIXEL_ID":
-                            b = a.pixelID;
-                            return "Duplicate Pixel ID: " + b + ".";
+                            e = a.pixelID;
+                            return "Duplicate Pixel ID: " + e + ".";
                         case "SET_METADATA_ON_UNINITIALIZED_PIXEL_ID":
                             b = a.metadataValue;
-                            var c = a.pixelID;
+                            c = a.pixelID;
                             return "Trying to set argument " + b + " for uninitialized Pixel ID " + c + ".";
                         case "CONFLICTING_VERSIONS":
                             return "Multiple pixels with conflicting versions were detected on this page.";
                         case "MULTIPLE_PIXELS":
                             return "Multiple pixels were detected on this page.";
                         case "UNSUPPORTED_METADATA_ARGUMENT":
-                            b = a.metadata;
-                            return "Unsupported metadata argument: " + b + ".";
+                            d = a.metadata;
+                            return "Unsupported metadata argument: " + d + ".";
                         case "REQUIRED_PARAM_MISSING":
-                            c = a.param;
+                            e = a.param;
                             b = a.eventName;
-                            return "Required parameter '" + c + "' is missing for event '" + b + "'.";
+                            return "Required parameter '" + e + "' is missing for event '" + b + "'.";
                         case "INVALID_PARAM":
                             c = a.param;
-                            b = a.eventName;
-                            return "Parameter '" + c + "' is invalid for event '" + b + "'.";
+                            d = a.eventName;
+                            return "Parameter '" + c + "' is invalid for event '" + d + "'.";
                         case "NO_EVENT_NAME":
                             return 'Missing event name. Track events must be logged with an event name fbq("track", eventName)';
                         case "NONSTANDARD_EVENT":
-                            c = a.eventName;
-                            return "You are sending a non-standard event '" + c + "'. The preferred way to send these events is using trackCustom. See 'https://developers.facebook.com/docs/ads-for-websites/pixel-events/#events' for more information.";
+                            e = a.eventName;
+                            return "You are sending a non-standard event '" + e + "'. The preferred way to send these events is using trackCustom. See 'https://developers.facebook.com/docs/ads-for-websites/pixel-events/#events' for more information.";
                         case "NEGATIVE_EVENT_PARAM":
                             b = a.param;
                             c = a.eventName;
                             return "Parameter '" + b + "' is negative for event '" + c + "'.";
                         case "PII_INVALID_TYPE":
-                            b = a.key_type;
-                            c = a.key_val;
-                            return "An invalid " + b + " was specified for '" + c + "'. This data will not be sent with any events for this Pixel.";
+                            d = a.key_type;
+                            e = a.key_val;
+                            return "An invalid " + d + " was specified for '" + e + "'. This data will not be sent with any events for this Pixel.";
                         case "PII_UNHASHED_PII":
                             b = a.key;
                             return "The value for the '" + b + "' key appeared to be PII. This data will not be sent with any events for this Pixel.";
@@ -4878,65 +5024,83 @@ fbq.pendingConfigs = ["global_config"];
                             c = a.action;
                             return "\"fbq('" + c + "', ...);\" is not a valid fbq('consent', ...) action. Valid actions are 'revoke' and 'grant'.";
                         case "INVALID_JSON_LD":
-                            b = a.jsonLd;
-                            return "Unable to parse JSON-LD tag. Malformed JSON found: '" + b + "'.";
+                            d = a.jsonLd;
+                            return "Unable to parse JSON-LD tag. Malformed JSON found: '" + d + "'.";
                         case "SITE_CODELESS_OPT_OUT":
-                            c = a.pixelID;
-                            return "Unable to open Codeless events interface for pixel as the site has opted out. Pixel ID: " + c + ".";
+                            e = a.pixelID;
+                            return "Unable to open Codeless events interface for pixel as the site has opted out. Pixel ID: " + e + ".";
                         case "PIXEL_NOT_INITIALIZED":
                             b = a.pixelID;
                             return "Pixel " + b + " not found";
                         default:
-                            y(new Error("INVALID_USER_ERROR - " + a.type + " - " + JSON.stringify(a)));
+                            C(new Error("INVALID_USER_ERROR - " + a.type + " - " + JSON.stringify(a)));
                             return "Invalid User Error."
                         }
                     }
-                    function w(a, f) {
+                    var y = function(a) {
+                        if (typeof a === "string")
+                            return "'" + a + "'";
+                        else if (typeof a == "undefined")
+                            return "undefined";
+                        else if (a === null)
+                            return "null";
+                        else if (!b(a) && a.constructor != null && a.constructor.name != null)
+                            return a.constructor.name;
                         try {
-                            var h = Math.random()
-                              , i = g.fbq && g.fbq._releaseSegment ? g.fbq._releaseSegment : "unknown";
-                            if (j && h < .01 || i === "canary") {
-                                h = new c(null);
-                                h.append("p", "pixel");
-                                h.append("v", g.fbq && g.fbq.version ? g.fbq.version : "unknown");
-                                h.append("e", a.toString());
-                                b(a, Error) && (h.append("f", a.fileName),
-                                h.append("s", a.stackTrace || a.stack));
-                                h.append("ue", f ? "1" : "0");
-                                h.append("rs", i);
-                                d(h, {
-                                    url: e.CONFIG.CDN_BASE_URL + "/log/error",
+                            return JSON.stringify(a) || "undefined"
+                        } catch (a) {
+                            return "undefined"
+                        }
+                    }
+                      , z = function(a) {
+                        return d(a, y).join(", ")
+                    };
+                    function A(a, b) {
+                        try {
+                            var d = Math.random()
+                              , f = g.fbq && g.fbq._releaseSegment ? g.fbq._releaseSegment : "unknown";
+                            if (m && d < .01 || f === "canary") {
+                                d = new e(null);
+                                d.append("p", "pixel");
+                                d.append("v", g.fbq && g.fbq.version ? g.fbq.version : "unknown");
+                                d.append("e", a.toString());
+                                c(a, Error) && (d.append("f", a.fileName),
+                                d.append("s", a.stackTrace || a.stack));
+                                d.append("ue", b ? "1" : "0");
+                                d.append("rs", f);
+                                h(d, {
+                                    url: i.CONFIG.CDN_BASE_URL + "/log/error",
                                     ignoreRequestLengthCheck: !0
                                 })
                             }
                         } catch (a) {}
                     }
-                    function x(a) {
+                    function B(a) {
                         var b = JSON.stringify(a);
-                        if (!Object.prototype.hasOwnProperty.call(u, b))
-                            u[b] = !0;
+                        if (!Object.prototype.hasOwnProperty.call(w, b))
+                            w[b] = !0;
                         else
                             return;
-                        b = v(a);
-                        r(b);
-                        t({
+                        b = x(a);
+                        t(b);
+                        v({
                             action: "FB_LOG",
                             logMessage: b,
-                            logType: s
+                            logType: u
                         }, "*");
-                        w(new Error(b), !0)
+                        A(new Error(b), !0)
                     }
-                    function y(a) {
-                        w(a, !1),
-                        h && r(a.toString())
+                    function C(a) {
+                        A(a, !1),
+                        j && t(a.toString())
                     }
                     a = {
-                        consoleWarn: o,
-                        disableAllLogging: q,
-                        disableSampling: l,
-                        enableVerboseDebugLogging: i,
-                        logError: y,
-                        logUserError: x
+                        consoleWarn: q,
+                        disableAllLogging: s,
+                        disableSampling: n,
+                        enableVerboseDebugLogging: l,
+                        logError: C,
+                        logUserError: B
                     };
                     k.exports = a
                 }
@@ -5624,16 +5788,14 @@ fbq.pendingConfigs = ["global_config"];
                       , b = f.getFbeventsModules("SignalsFBEventsNetworkConfig")
                       , c = f.getFbeventsModules("SignalsFBEventsExperimentNames")
                       , d = c.SEND_BEACON_STRING_EXPERIMENT;
-                    function e(c) {
-                        if (g.navigator && g.navigator.sendBeacon)
-                            if (a.isInTest(d)) {
-                                c.replaceEntry("rqm", "SB");
-                                return g.navigator.sendBeacon(b.ENDPOINT, c.toQueryString())
-                            } else {
-                                c.replaceEntry("rqm", "SB");
-                                return g.navigator.sendBeacon(b.ENDPOINT, c.toFormData())
-                            }
-                        return !1
+                    function e(c, e) {
+                        if (!g.navigator || !g.navigator.sendBeacon)
+                            return !1;
+                        e = e || {};
+                        e = e.url;
+                        e = e === void 0 ? b.ENDPOINT : e;
+                        c.replaceEntry("rqm", "SB");
+                        return a.isInTest(d) ? g.navigator.sendBeacon(e, c.toQueryString()) : g.navigator.sendBeacon(e, c.toFormData())
                     }
                     k.exports = e
                 }
@@ -5900,33 +6062,43 @@ fbq.pendingConfigs = ["global_config"];
                 (function() {
                     "use strict";
                     var a = f.getFbeventsModules("SignalsFBEventsLogging")
-                      , b = f.getFbeventsModules("SignalsParamList")
-                      , c = f.getFbeventsModules("signalsFBEventsSendXHR")
-                      , d = .01
-                      , e = Math.random()
+                      , b = f.getFbeventsModules("SignalsParamList");
+                    f.getFbeventsModules("SignalsFBEventsQE");
+                    f.getFbeventsModules("signalsFBEventsGetIsChrome");
+                    var c = f.getFbeventsModules("signalsFBEventsSendGET");
+                    f.getFbeventsModules("signalsFBEventsSendXHR");
+                    f.getFbeventsModules("signalsFBEventsSendBeacon");
+                    var d = f.getFbeventsModules("SignalsFBEventsExperimentNames");
+                    d.SEND_BEACON_STRING_EXPERIMENT;
+                    d = .01;
+                    var e = Math.random()
                       , h = g.fbq && g.fbq._releaseSegment ? g.fbq._releaseSegment : "unknown"
-                      , i = e < d || h === "canary";
-                    function j(d) {
+                      , i = e < d || h === "canary"
+                      , j = "https://connect.facebook.net/log/fbevents_telemetry/";
+                    function l(d) {
                         var e = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0
                           , f = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : !1;
                         if (!f && !i)
                             return;
                         try {
-                            var j = new b(null);
-                            j.append("v", g.fbq && g.fbq.version ? g.fbq.version : "unknown");
-                            j.append("rs", h);
-                            j.append("e", d);
-                            j.append("p", e);
-                            c(j, "https://connect.facebook.net/log/fbevents_telemetry/")
+                            var k = new b(null);
+                            k.append("v", g.fbq && g.fbq.version ? g.fbq.version : "unknown");
+                            k.append("rs", h);
+                            k.append("e", d);
+                            k.append("p", e);
+                            c(k, {
+                                ignoreRequestLengthCheck: !0,
+                                url: j
+                            })
                         } catch (b) {
                             a.logError(b)
                         }
                     }
-                    function l(a) {
-                        j("FBMQ_FORWARDED", a, !0)
+                    function m(a) {
+                        l("FBMQ_FORWARDED", a, !0)
                     }
                     k.exports = {
-                        logMobileNativeForwarding: l
+                        logMobileNativeForwarding: m
                     }
                 }
                 )();
@@ -6193,14 +6365,31 @@ fbq.pendingConfigs = ["global_config"];
                     function e(a) {
                         return typeof a === "number" || typeof a === "string" && /^\d+$/.test(a)
                     }
-                    var f = Number.isInteger || function(a) {
+                    function f(a) {
+                        return a != null && (typeof a === "undefined" ? "undefined" : h(a)) === "object" && d(a) === !1
+                    }
+                    function j(a) {
+                        return f(a) === !0 && Object.prototype.toString.call(a) === "[object Object]"
+                    }
+                    function k(a) {
+                        if (j(a) === !1)
+                            return !1;
+                        a = a.constructor;
+                        if (typeof a !== "function")
+                            return !1;
+                        a = a.prototype;
+                        if (j(a) === !1)
+                            return !1;
+                        return Object.prototype.hasOwnProperty.call(a, "isPrototypeOf") === !1 ? !1 : !0
+                    }
+                    var m = Number.isInteger || function(a) {
                         return typeof a === "number" && isFinite(a) && Math.floor(a) === a
                     }
                     ;
-                    function j(a) {
-                        return f(a) && a >= 0 && a <= Number.MAX_SAFE_INTEGER
+                    function n(a) {
+                        return m(a) && a >= 0 && a <= Number.MAX_SAFE_INTEGER
                     }
-                    function k(a, c, d) {
+                    function p(a, c, d) {
                         var e = b ? "on" + c : c;
                         c = b ? a.attachEvent : a.addEventListener;
                         var f = b ? a.detachEvent : a.removeEventListener
@@ -6210,24 +6399,24 @@ fbq.pendingConfigs = ["global_config"];
                         };
                         c && c.call(a, e, g, !1)
                     }
-                    var m = Object.prototype.hasOwnProperty
-                      , n = !{
+                    var q = Object.prototype.hasOwnProperty
+                      , r = !{
                         toString: null
                     }.propertyIsEnumerable("toString")
-                      , p = ["toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "constructor"]
-                      , q = p.length;
-                    function r(a) {
+                      , s = ["toString", "toLocaleString", "valueOf", "hasOwnProperty", "isPrototypeOf", "propertyIsEnumerable", "constructor"]
+                      , t = s.length;
+                    function u(a) {
                         if ((typeof a === "undefined" ? "undefined" : h(a)) !== "object" && (typeof a !== "function" || a === null))
                             throw new TypeError("Object.keys called on non-object");
                         var b = [];
                         for (var c in a)
-                            m.call(a, c) && b.push(c);
-                        if (n)
-                            for (var d = 0; d < q; d++)
-                                m.call(a, p[d]) && b.push(p[d]);
+                            q.call(a, c) && b.push(c);
+                        if (r)
+                            for (var d = 0; d < t; d++)
+                                q.call(a, s[d]) && b.push(s[d]);
                         return b
                     }
-                    function s(a, b) {
+                    function v(a, b) {
                         if (a == null)
                             throw new TypeError(" array is null or not defined");
                         a = Object(a);
@@ -6245,7 +6434,7 @@ fbq.pendingConfigs = ["global_config"];
                         }
                         return d
                     }
-                    function t(a, b, c) {
+                    function w(a, b, c) {
                         if (a == null)
                             throw new TypeError(" array is null or not defined");
                         if (typeof b !== "function")
@@ -6267,7 +6456,7 @@ fbq.pendingConfigs = ["global_config"];
                             f++;
                         return c
                     }
-                    function u(a) {
+                    function x(a) {
                         if (typeof a !== "function")
                             throw new TypeError();
                         var b = Object(this)
@@ -6278,10 +6467,10 @@ fbq.pendingConfigs = ["global_config"];
                                 return !0;
                         return !1
                     }
-                    function v(a) {
-                        return r(a).length === 0
+                    function y(a) {
+                        return u(a).length === 0
                     }
-                    function w(a) {
+                    function z(a) {
                         if (this === void 0 || this === null)
                             throw new TypeError();
                         var b = Object(this)
@@ -6297,22 +6486,22 @@ fbq.pendingConfigs = ["global_config"];
                             }
                         return d
                     }
-                    function x(a, b) {
+                    function A(a, b) {
                         try {
                             return b(a)
                         } catch (a) {
                             if (a instanceof TypeError)
-                                if (y.test(a))
+                                if (B.test(a))
                                     return null;
-                                else if (z.test(a))
+                                else if (C.test(a))
                                     return void 0;
                             throw a
                         }
                     }
-                    var y = /^null | null$|^[^(]* null /i
-                      , z = /^undefined | undefined$|^[^(]* undefined /i;
-                    x["default"] = x;
-                    var A = function() {
+                    var B = /^null | null$|^[^(]* null /i
+                      , C = /^undefined | undefined$|^[^(]* undefined /i;
+                    A["default"] = A;
+                    var D = function() {
                         function a(b) {
                             o(this, a),
                             this.items = b || []
@@ -6320,7 +6509,7 @@ fbq.pendingConfigs = ["global_config"];
                         i(a, [{
                             key: "has",
                             value: function(a) {
-                                return u.call(this.items, function(b) {
+                                return x.call(this.items, function(b) {
                                     return b === a
                                 })
                             }
@@ -6332,42 +6521,44 @@ fbq.pendingConfigs = ["global_config"];
                         }]);
                         return a
                     }();
-                    function B(a) {
+                    function E(a) {
                         return a
                     }
-                    function C(a, b) {
+                    function F(a, b) {
                         return a == null || b == null ? !1 : a.indexOf(b) >= 0
                     }
-                    function D(a, b) {
+                    function G(a, b) {
                         return a == null || b == null ? !1 : a.indexOf(b) === 0
                     }
-                    A = {
-                        FBSet: A,
-                        castTo: B,
+                    D = {
+                        FBSet: D,
+                        castTo: E,
                         each: function(a, b) {
-                            s.call(this, a, b)
+                            v.call(this, a, b)
                         },
                         filter: function(a, b) {
-                            return w.call(a, b)
+                            return z.call(a, b)
                         },
-                        idx: x,
+                        idx: A,
                         isArray: d,
-                        isEmptyObject: v,
+                        isEmptyObject: y,
                         isInstanceOf: c,
-                        isInteger: f,
+                        isInteger: m,
                         isNumber: e,
-                        isSafeInteger: j,
-                        keys: r,
-                        listenOnce: k,
-                        map: s,
-                        reduce: t,
+                        isObject: f,
+                        isPlainObject: k,
+                        isSafeInteger: n,
+                        keys: u,
+                        listenOnce: p,
+                        map: v,
+                        reduce: w,
                         some: function(a, b) {
-                            return u.call(a, b)
+                            return x.call(a, b)
                         },
-                        stringIncludes: C,
-                        stringStartsWith: D
+                        stringIncludes: F,
+                        stringStartsWith: G
                     };
-                    l.exports = A
+                    l.exports = D
                 }
                 )();
                 return l.exports
@@ -6580,26 +6771,27 @@ fbq.pendingConfigs = ["global_config"];
                       , A = m.each
                       , B = m.FBSet
                       , C = m.isEmptyObject
-                      , D = m.isNumber
-                      , E = m.keys;
+                      , D = m.isPlainObject
+                      , E = m.isNumber
+                      , F = m.keys;
                     m = z.execEnd;
-                    var F = z.fired, aa = z.getCustomParameters, ba = z.iwlBootstrap, ca = z.piiInvalidated, da = z.setIWLExtractors, ea = o.logError, G = o.logUserError, H = s.global, I = -1, fa = Array.prototype.slice, J = Object.prototype.hasOwnProperty, K = i.href, L = !1, M = !1, N = [], O = {}, P;
+                    var G = z.fired, aa = z.getCustomParameters, ba = z.iwlBootstrap, ca = z.piiInvalidated, da = z.setIWLExtractors, ea = o.logError, H = o.logUserError, I = s.global, J = -1, fa = Array.prototype.slice, K = Object.prototype.hasOwnProperty, L = i.href, M = !1, N = !1, O = [], P = {}, Q;
                     h.referrer;
-                    var Q = {
+                    var R = {
                         PageView: new B(),
                         PixelInitialized: new B()
                     }
-                      , R = new q(a,O)
-                      , S = new x(R,H);
+                      , S = new q(a,P)
+                      , T = new x(S,I);
                     function ga(a) {
                         for (var b in a)
-                            J.call(a, b) && (this[b] = a[b]);
+                            K.call(a, b) && (this[b] = a[b]);
                         return this
                     }
-                    function T() {
+                    function U() {
                         try {
                             var b = fa.call(arguments);
-                            if (H.isLocked() && b[0] !== "consent") {
+                            if (I.isLocked() && b[0] !== "consent") {
                                 a.queue.push(arguments);
                                 return
                             }
@@ -6609,32 +6801,32 @@ fbq.pendingConfigs = ["global_config"];
                               , f = d.shift();
                             switch (f) {
                             case "addPixelId":
-                                L = !0;
-                                V.apply(this, d);
+                                M = !0;
+                                W.apply(this, d);
                                 break;
                             case "init":
-                                M = !0;
-                                V.apply(this, d);
+                                N = !0;
+                                W.apply(this, d);
                                 break;
                             case "set":
-                                U.apply(this, d);
+                                V.apply(this, d);
                                 break;
                             case "track":
-                                if (D(d[0])) {
+                                if (E(d[0])) {
                                     ja.apply(this, d);
                                     break
                                 }
                                 if (e) {
-                                    X.apply(this, d);
+                                    Y.apply(this, d);
                                     break
                                 }
                                 ia.apply(this, d);
                                 break;
                             case "trackCustom":
-                                X.apply(this, d);
+                                Y.apply(this, d);
                                 break;
                             case "send":
-                                Y.apply(this, d);
+                                Z.apply(this, d);
                                 break;
                             case "on":
                                 var g = j(d)
@@ -6644,132 +6836,190 @@ fbq.pendingConfigs = ["global_config"];
                                 k && k.triggerWeakly(i);
                                 break;
                             case "loadPlugin":
-                                S.loadPlugin(d[0]);
+                                T.loadPlugin(d[0]);
                                 break;
                             default:
-                                R.callMethod(arguments);
+                                S.callMethod(arguments);
                                 break
                             }
                         } catch (a) {
                             ea(a)
                         }
                     }
-                    function U(d) {
+                    function V(d) {
                         for (var e = arguments.length, f = Array(e > 1 ? e - 1 : 0), g = 1; g < e; g++)
                             f[g - 1] = arguments[g];
+                        var h = [d].concat(f);
                         switch (d) {
                         case "endpoint":
-                            var h = f[0];
-                            if (typeof h !== "string")
-                                throw new Error("endpoint value must be a string");
-                            b.ENDPOINT = h;
-                            break;
-                        case "cdn":
                             var i = f[0];
                             if (typeof i !== "string")
-                                throw new Error("cdn value must be a string");
-                            r.CONFIG.CDN_BASE_URL = i;
+                                throw new Error("endpoint value must be a string");
+                            b.ENDPOINT = i;
                             break;
-                        case "releaseSegment":
+                        case "cdn":
                             var j = f[0];
                             if (typeof j !== "string")
-                                throw new Error("releaseSegment value must be a string");
-                            a._releaseSegment = j;
+                                throw new Error("cdn value must be a string");
+                            r.CONFIG.CDN_BASE_URL = j;
+                            break;
+                        case "releaseSegment":
+                            var k = f[0];
+                            if (typeof k !== "string") {
+                                H({
+                                    invalidParamName: "new_release_segment",
+                                    invalidParamValue: k,
+                                    method: "set",
+                                    params: h,
+                                    type: "INVALID_FBQ_METHOD_PARAMETER"
+                                });
+                                break
+                            }
+                            a._releaseSegment = k;
                             break;
                         case "autoConfig":
-                            var k = f[0]
-                              , l = f[1]
-                              , m = k === !0 || k === "true" ? "optIn" : "optOut";
-                            if (typeof l !== "string")
-                                throw new Error("Invalid pixelID supplied to set autoConfig.");
-                            R.callMethod([m, l, "AutomaticSetup"]);
+                            var l = f[0]
+                              , m = f[1]
+                              , n = l === !0 || l === "true" ? "optIn" : "optOut";
+                            if (typeof m !== "string") {
+                                H({
+                                    invalidParamName: "pixel_id",
+                                    invalidParamValue: m,
+                                    method: "set",
+                                    params: h,
+                                    type: "INVALID_FBQ_METHOD_PARAMETER"
+                                });
+                                break
+                            }
+                            S.callMethod([n, m, "AutomaticSetup"]);
                             break;
                         case "firstPartyCookies":
-                            var n = f[0]
-                              , o = f[1]
-                              , p = n === !0 || n === "true" ? "optIn" : "optOut";
-                            if (typeof o === "string")
-                                R.callMethod([p, o, "FirstPartyCookies"]);
-                            else if (o === void 0)
-                                R.disableFirstPartyCookies = !0;
-                            else
-                                throw new Error("Invalid pixelID supplied to set cookie controls.");
+                            var o = f[0]
+                              , p = f[1]
+                              , q = o === !0 || o === "true" ? "optIn" : "optOut";
+                            typeof p === "string" ? S.callMethod([q, p, "FirstPartyCookies"]) : p === void 0 ? S.disableFirstPartyCookies = !0 : H({
+                                invalidParamName: "pixel_id",
+                                invalidParamValue: p,
+                                method: "set",
+                                params: h,
+                                type: "INVALID_FBQ_METHOD_PARAMETER"
+                            });
                             break;
                         case "experiments":
                             c.setExperiments.apply(c, f);
                             break;
                         case "mobileBridge":
-                            var q = f[0]
-                              , s = f[1];
-                            if (typeof q !== "string")
-                                throw new Error("Invalid pixelID supplied to set call.");
-                            if (typeof s !== "string")
-                                throw new Error("Invalid appID supplied to set call.");
-                            t.registerBridge([q, s]);
+                            var s = f[0]
+                              , u = f[1];
+                            if (typeof s !== "string") {
+                                H({
+                                    invalidParamName: "pixel_id",
+                                    invalidParamValue: s,
+                                    method: "set",
+                                    params: h,
+                                    type: "INVALID_FBQ_METHOD_PARAMETER"
+                                });
+                                break
+                            }
+                            if (typeof u !== "string") {
+                                H({
+                                    invalidParamName: "app_id",
+                                    invalidParamValue: u,
+                                    method: "set",
+                                    params: h,
+                                    type: "INVALID_FBQ_METHOD_PARAMETER"
+                                });
+                                break
+                            }
+                            t.registerBridge([s, u]);
                             break;
                         case "iwlExtractors":
-                            var u = f[0]
-                              , v = f[1];
+                            var v = f[0]
+                              , w = f[1];
                             da.triggerWeakly({
-                                extractors: v,
-                                pixelID: u
+                                extractors: w,
+                                pixelID: v
                             });
                             break;
                         case "startIWLBootstrap":
-                            var w = f[0]
-                              , x = f[1];
+                            var x = f[0]
+                              , y = f[1];
                             ba.triggerWeakly({
-                                graphToken: w,
-                                pixelID: x
+                                graphToken: x,
+                                pixelID: y
                             });
                             break;
                         default:
-                            var y = f[0]
-                              , z = f[1];
+                            var z = f[0]
+                              , A = f[1];
                             if (typeof d !== "string")
                                 throw new Error("The metadata setting provided in the 'set' call is invalid.");
-                            if (typeof y !== "string")
-                                throw new Error("The metadata value must be a string.");
-                            if (typeof z !== "string")
-                                throw new Error("Invalid pixelID supplied to set call.");
-                            ha(d, y, z);
+                            if (typeof z !== "string") {
+                                H({
+                                    invalidParamName: "value",
+                                    invalidParamValue: z,
+                                    method: "set",
+                                    params: h,
+                                    type: "INVALID_FBQ_METHOD_PARAMETER"
+                                });
+                                break
+                            }
+                            if (typeof A !== "string") {
+                                H({
+                                    invalidParamName: "pixel_id",
+                                    invalidParamValue: A,
+                                    method: "set",
+                                    params: h,
+                                    type: "INVALID_FBQ_METHOD_PARAMETER"
+                                });
+                                break
+                            }
+                            ha(d, z, A);
                             break
                         }
                     }
                     a._initHandlers = [];
                     a._initsDone = {};
-                    function V(a, b, c) {
-                        I = I === -1 ? Date.now() : I;
-                        a = y(a);
-                        if (a == null)
+                    function W(a, b, c) {
+                        J = J === -1 ? Date.now() : J;
+                        var d = y(a);
+                        if (d == null)
                             return;
-                        if (J.call(O, a)) {
-                            b && C(O[a].userData) ? (O[a].userData = b,
-                            S.loadPlugin("identity")) : G({
-                                pixelID: a,
+                        var e = b == null || D(b);
+                        e || H({
+                            invalidParamName: "user_data",
+                            invalidParamValue: b,
+                            method: "init",
+                            params: [a, b],
+                            type: "INVALID_FBQ_METHOD_PARAMETER"
+                        });
+                        if (K.call(P, d)) {
+                            b != null && C(P[d].userData) ? (P[d].userData = e ? b || {} : {},
+                            T.loadPlugin("identity")) : H({
+                                pixelID: d,
                                 type: "DUPLICATE_PIXEL_ID"
                             });
                             return
                         }
-                        c = {
+                        a = {
                             agent: c ? c.agent : null,
                             eventCount: 0,
-                            id: a,
-                            userData: b || {},
+                            id: d,
+                            userData: e ? b || {} : {},
                             userDataFormFields: {}
                         };
-                        N.push(c);
-                        O[a] = c;
-                        b != null && S.loadPlugin("identity");
-                        W();
-                        R.loadConfig(a)
+                        O.push(a);
+                        P[d] = a;
+                        b != null && T.loadPlugin("identity");
+                        X();
+                        S.loadConfig(d)
                     }
-                    function W() {
+                    function X() {
                         for (var b = 0; b < a._initHandlers.length; b++) {
                             var c = a._initHandlers[b];
                             a._initsDone[b] || (a._initsDone[b] = {});
-                            for (var d = 0; d < N.length; d++) {
-                                var e = N[d];
+                            for (var d = 0; d < O.length; d++) {
+                                var e = O[d];
                                 a._initsDone[b][e.id] || (a._initsDone[b][e.id] = !0,
                                 c(e))
                             }
@@ -6777,18 +7027,18 @@ fbq.pendingConfigs = ["global_config"];
                     }
                     function ha(a, b, c) {
                         var d = p.validateMetadata(a);
-                        d.error && G(d.error);
+                        d.error && H(d.error);
                         d.warnings && d.warnings.forEach(function(a) {
-                            G(a)
+                            H(a)
                         });
-                        if (J.call(O, c)) {
-                            for (var d = 0, e = N.length; d < e; d++)
-                                if (N[d].id === c) {
-                                    N[d][a] = b;
+                        if (K.call(P, c)) {
+                            for (var d = 0, e = O.length; d < e; d++)
+                                if (O[d].id === c) {
+                                    O[d][a] = b;
                                     break
                                 }
                         } else
-                            G({
+                            H({
                                 metadataValue: b,
                                 pixelID: c,
                                 type: "SET_METADATA_ON_UNINITIALIZED_PIXEL_ID"
@@ -6798,12 +7048,12 @@ fbq.pendingConfigs = ["global_config"];
                         b = b || {},
                         p.validateEventAndLog(a, b),
                         a === "CustomEvent" && typeof b.event === "string" && (a = b.event),
-                        X.call(this, a, b, c)
+                        Y.call(this, a, b, c)
                     }
-                    function X(a, b, c) {
-                        for (var d = 0, e = N.length; d < e; d++) {
-                            var f = N[d];
-                            if (!(a === "PageView" && this.allowDuplicatePageViews) && Object.prototype.hasOwnProperty.call(Q, a) && Q[a].has(f.id))
+                    function Y(a, b, c) {
+                        for (var d = 0, e = O.length; d < e; d++) {
+                            var f = O[d];
+                            if (!(a === "PageView" && this.allowDuplicatePageViews) && Object.prototype.hasOwnProperty.call(R, a) && R[a].has(f.id))
                                 continue;
                             $({
                                 customData: b,
@@ -6811,7 +7061,7 @@ fbq.pendingConfigs = ["global_config"];
                                 eventName: a,
                                 pixel: f
                             });
-                            Object.prototype.hasOwnProperty.call(Q, a) && Q[a].add(f.id)
+                            Object.prototype.hasOwnProperty.call(R, a) && R[a].add(f.id)
                         }
                     }
                     function ja(a, b) {
@@ -6821,8 +7071,8 @@ fbq.pendingConfigs = ["global_config"];
                             pixel: null
                         })
                     }
-                    function Y(a, b, c) {
-                        N.forEach(function(c) {
+                    function Z(a, b, c) {
+                        O.forEach(function(c) {
                             return $({
                                 customData: b,
                                 eventName: a,
@@ -6830,7 +7080,7 @@ fbq.pendingConfigs = ["global_config"];
                             })
                         })
                     }
-                    function Z(b, c) {
+                    function ka(b, c) {
                         var e = new d(a.piiTranslator);
                         try {
                             e.append("ud", b && b.userData || {}, !0),
@@ -6845,14 +7095,14 @@ fbq.pendingConfigs = ["global_config"];
                         b.eventCount++);
                         c = aa.trigger(b, c);
                         A(c, function(a) {
-                            return A(E(a), function(b) {
+                            return A(F(a), function(b) {
                                 if (e.containsKey(b))
                                     throw new Error("Custom parameter " + b + " has already been specified.");
                                 else
                                     e.append(b, a[b])
                             })
                         });
-                        e.append("it", I);
+                        e.append("it", J);
                         c = b && b.codeless === "false";
                         e.append("coo", c);
                         return e
@@ -6866,7 +7116,7 @@ fbq.pendingConfigs = ["global_config"];
                             t.sendEvent(a, d, b || {});
                             return
                         }
-                        var f = Z(a, d);
+                        var f = ka(a, d);
                         if (c != null) {
                             c = c.eventID;
                             f.append("eid", c)
@@ -6879,78 +7129,78 @@ fbq.pendingConfigs = ["global_config"];
                             piiTranslator: null
                         })
                     }
-                    function ka() {
-                        while (a.queue.length && !H.isLocked()) {
+                    function la() {
+                        while (a.queue.length && !I.isLocked()) {
                             var b = a.queue.shift();
-                            T.apply(a, b)
+                            U.apply(a, b)
                         }
                     }
-                    H.onUnlocked(function() {
-                        ka()
+                    I.onUnlocked(function() {
+                        la()
                     });
-                    a.pixelId && (L = !0,
-                    V(a.pixelId));
-                    (L && M || g.fbq !== g._fbq) && G({
+                    a.pixelId && (M = !0,
+                    W(a.pixelId));
+                    (M && N || g.fbq !== g._fbq) && H({
                         type: "CONFLICTING_VERSIONS"
                     });
-                    N.length > 1 && G({
+                    O.length > 1 && H({
                         type: "MULTIPLE_PIXELS"
                     });
-                    function la() {
+                    function ma() {
                         if (a.disablePushState === !0)
                             return;
                         if (!k.pushState || !k.replaceState)
                             return;
                         var b = v(function() {
-                            P = K;
-                            K = i.href;
-                            if (K === P)
+                            Q = L;
+                            L = i.href;
+                            if (L === Q)
                                 return;
                             var a = new ga({
                                 allowDuplicatePageViews: !0
                             });
-                            T.call(a, "trackCustom", "PageView")
+                            U.call(a, "trackCustom", "PageView")
                         });
                         u(k, "pushState", b);
                         u(k, "replaceState", b);
                         g.addEventListener("popstate", b, !1)
                     }
-                    F.listenOnce(function() {
-                        la()
+                    G.listenOnce(function() {
+                        ma()
                     });
-                    function ma(b) {
+                    function na(b) {
                         a._initHandlers.push(b),
-                        W()
+                        X()
                     }
-                    function na() {
+                    function oa() {
                         return {
-                            pixelInitializationTime: I,
-                            pixels: N
+                            pixelInitializationTime: J,
+                            pixels: O
                         }
                     }
-                    function oa(a) {
-                        a.instance = R,
-                        a.callMethod = T,
+                    function pa(a) {
+                        a.instance = S,
+                        a.callMethod = U,
                         a._initHandlers = [],
                         a._initsDone = {},
-                        a.send = Y,
-                        a.getEventCustomParameters = Z,
-                        a.addInitHandler = ma,
-                        a.getState = na,
-                        a.init = V,
-                        a.set = U,
+                        a.send = Z,
+                        a.getEventCustomParameters = ka,
+                        a.addInitHandler = na,
+                        a.getState = oa,
+                        a.init = W,
+                        a.set = V,
                         a.loadPlugin = function(a) {
-                            return S.loadPlugin(a)
+                            return T.loadPlugin(a)
                         }
                         ,
                         a.registerPlugin = function(a, b) {
-                            S.registerPlugin(a, b)
+                            T.registerPlugin(a, b)
                         }
                     }
-                    oa(g.fbq);
-                    ka();
+                    pa(g.fbq);
+                    la();
                     l.exports = {
-                        doExport: oa
+                        doExport: pa
                     };
                     m.trigger()
                 }
